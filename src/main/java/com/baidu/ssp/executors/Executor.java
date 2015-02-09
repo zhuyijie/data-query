@@ -8,6 +8,11 @@ import com.baidu.ssp.querys.Query;
  */
 public interface Executor {
 
+    /**
+     *
+     * 执行查询，获取结果
+     *
+     * */
     public Frame execute(Query query);
 
 }
