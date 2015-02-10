@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * 报表数据类型枚举类
+ * The type class
  * @author zhuyijie
  * @date 14-12-1
  */

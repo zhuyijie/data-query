@@ -1,42 +1,41 @@
 package com.baidu.ssp.tables;
 
+import com.baidu.ssp.exceptions.FieldNotExistsException;
+
+import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 表描述类
+ * The table, containing table name and fields
+ * is used to describe the corresponding 'table in database'
  * @author zhuyijie
  * @date 14-8-5
  */
 public class Table {
 
-    /**
-     * 在数据库中的表名
-     * */
-    private String rawName;
 
     /**
-     * 用于显示的名称
+     * the table used for displaying
      * */
     private String tableName;
 
     /**
-     * 所属数据源
+     * the data source
      * */
-    private String dataSourceId;
+    private DataSource dataSource;
 
     /**
-     * 字段名到Field的映射
+     * the mapping from field to a Field Object
      * */
     private Map<String, Field> nameToFieldMap;
 
-    public Table(String rawName, String tableName,
-                 String dataSourceId, Collection<Field> fields) {
-        this.rawName = rawName;
+    public Table(String tableName,
+                 DataSource dataSource, Collection<Field> fields) {
         this.tableName = tableName;
-        this.dataSourceId = dataSourceId;
+        this.dataSource = dataSource;
         this.setFields(fields);
     }
 
@@ -52,15 +51,10 @@ public class Table {
     }
 
     public Field getField(String fieldName) {
+        if (!nameToFieldMap.containsKey(fieldName)) {
+            throw new FieldNotExistsException("field : " + fieldName + " not exists in table " + this.tableName);
+        }
         return nameToFieldMap.get(fieldName);
-    }
-
-    public String getRawName() {
-        return rawName;
-    }
-
-    public void setRawName(String rawName) {
-        this.rawName = rawName;
     }
 
     public String getTableName() {
@@ -71,11 +65,11 @@ public class Table {
         this.tableName = tableName;
     }
 
-    public String getDataSourceId() {
-        return dataSourceId;
+    public DataSource getDataSource() {
+        return dataSource;
     }
 
-    public void setDataSourceId(String dataSourceId) {
-        this.dataSourceId = dataSourceId;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }
